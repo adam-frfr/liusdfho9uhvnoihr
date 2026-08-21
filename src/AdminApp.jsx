@@ -275,9 +275,10 @@ const WhatsAppIcon = ({ size = 16, ...props }) => (
 );
 
 // Default featured images
-const brownieImg = "https://xrcypnyewxnsnjwsixot.supabase.co/storage/v1/object/public/product-images/brownies/brownie.webp";
-const cupcakeImg = "https://xrcypnyewxnsnjwsixot.supabase.co/storage/v1/object/public/product-images/cupcake4.webp";
-const cakeImg = "https://xrcypnyewxnsnjwsixot.supabase.co/storage/v1/object/public/product-images/roundcake1.webp";
+const brownieImg = "https://pratxgdpyhqvjmszemly.supabase.co/storage/v1/object/public/product-images/brownies/brownie.webp";
+const cupcakeImg = "https://pratxgdpyhqvjmszemly.supabase.co/storage/v1/object/public/product-images/cupcake4.webp";
+const cakeImg = "https://pratxgdpyhqvjmszemly.supabase.co/storage/v1/object/public/product-images/roundcake1.webp";
+
 
 const isSupabaseLive = supabase && import.meta.env.VITE_SUPABASE_URL;
 
