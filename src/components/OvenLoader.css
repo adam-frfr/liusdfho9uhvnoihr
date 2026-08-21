@@ -1,0 +1,115 @@
+.oven-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fdfdfd;
+  color: #800000;
+  font-family: inherit;
+}
+
+.oven-pulse-wrapper {
+  animation: fullPulse 4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.oven-svg {
+  animation: ovenShake 4s ease-in-out infinite;
+  overflow: visible;
+}
+
+/* Door swings open to the side */
+.oven-door {
+  transform-origin: left center;
+  transform-box: fill-box;
+  animation: doorSwing 4s ease-in-out infinite;
+}
+
+.oven-door-handle {
+  transform-origin: left center;
+  transform-box: fill-box;
+  animation: doorSwing 4s ease-in-out infinite;
+}
+
+/* Tray entering and exiting */
+.oven-tray {
+  transform-origin: center center;
+  transform-box: fill-box;
+  animation: trayInsert 4s ease-in-out infinite;
+}
+
+/* Cupcake rising */
+.cupcake-body {
+  transform-origin: bottom center;
+  transform-box: fill-box;
+  animation: bakeRise 4s ease-in-out infinite;
+}
+
+/* Orange/Yellow glow inside */
+.oven-glow {
+  opacity: 0;
+  animation: ovenGlow 4s ease-in-out infinite;
+}
+
+.oven-text {
+  margin-top: 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+/* --- KEYFRAMES --- */
+
+@keyframes doorSwing {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  /* Open to put in */
+  5% { transform: scaleX(0.1); opacity: 0; }
+  18% { transform: scaleX(0.1); opacity: 0; }
+  23% { transform: scaleX(1); opacity: 1; }
+  /* Closed while baking */
+  65% { transform: scaleX(1); opacity: 1; }
+  /* Open to take out */
+  70% { transform: scaleX(0.1); opacity: 0; }
+  83% { transform: scaleX(0.1); opacity: 0; }
+  88% { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes trayInsert {
+  0%, 4% { transform: translate(0, 30px) scale(0.5); opacity: 0; }
+  6% { transform: translate(0, 30px) scale(0.5); opacity: 1; }
+  15% { transform: translate(0, 0) scale(1); opacity: 1; }
+  73% { transform: translate(0, 0) scale(1); opacity: 1; }
+  82% { transform: translate(0, 30px) scale(0.5); opacity: 1; }
+  84% { transform: translate(0, 30px) scale(0.5); opacity: 0; }
+  100% { transform: translate(0, 30px) scale(0.5); opacity: 0; }
+}
+
+@keyframes bakeRise {
+  0%, 25% { transform: scaleY(0.4); }
+  60%, 100% { transform: scaleY(1); }
+}
+
+@keyframes ovenShake {
+  0%, 30% { transform: rotate(0); }
+  32%, 40%, 48%, 56%, 64% { transform: rotate(-3deg); }
+  36%, 44%, 52%, 60% { transform: rotate(3deg); }
+  68%, 100% { transform: rotate(0); }
+}
+
+@keyframes ovenGlow {
+  0%, 25% { opacity: 0; }
+  30%, 65% { opacity: 1; }
+  70%, 100% { opacity: 0; }
+}
+
+@keyframes fullPulse {
+  0%, 88% { transform: scale(1); }
+  93% { transform: scale(1.15); }
+  98%, 100% { transform: scale(1); }
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}

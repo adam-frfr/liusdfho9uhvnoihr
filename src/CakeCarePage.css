@@ -1,0 +1,114 @@
+.cake-care-page {
+  padding: 8rem 2rem 4rem;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.care-page-container {
+  max-width: 1100px;
+  width: 100%;
+  position: relative;
+}
+
+.care-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 1.5rem;
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.back-btn-care {
+  background: rgba(128, 0, 0, 0.05);
+  border: none;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn-care:hover {
+  background: var(--secondary);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.care-page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--secondary);
+  margin: 0;
+  font-weight: 700;
+}
+
+.care-page-content {
+  width: 100%;
+}
+
+.care-intro {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.care-intro p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #666;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Ensure the guide inside the page doesn't have extra shadow/padding if it's already on a clean page */
+.cake-care-page .cake-care-section {
+  box-shadow: none;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.care-footer-note {
+  margin-top: 5rem;
+  padding: 3rem;
+  background: #fdf2f4;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.care-footer-note p {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .cake-care-page {
+    padding: 7rem 1.5rem 3rem;
+  }
+
+  .care-page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .care-page-content {
+    padding: 0;
+  }
+  
+  .care-intro p {
+    font-size: 1rem;
+  }
+}
