@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 
 const urlBase64ToUint8Array = (base64String) => {
+  if (!base64String) return new Uint8Array();
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding)
     .replace(/-/g, '+')
@@ -14,6 +15,7 @@ const urlBase64ToUint8Array = (base64String) => {
   }
   return outputArray;
 };
+
 
 export const subscribeToPush = async (birthday = null) => {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
