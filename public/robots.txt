@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://minibakes.com/sitemap.xml
+Sitemap: https://minibakee.vercel.app/sitemap.xml
