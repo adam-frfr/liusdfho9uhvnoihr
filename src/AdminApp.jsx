@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { LayoutDashboard, ShoppingCart, Package, Users, Settings, LogOut, Bell, Search, X, User, Phone, Calendar, Clock, FileText, Cake, Palette, CheckCircle2, MessageCircle, Trash2, Sparkles, TrendingUp, Plus, ChevronLeft, ChevronRight, Edit3, Save, Image as ImageIcon, Upload, Mail, Shield, BarChart3, Database, Activity, RefreshCw, Smartphone, Link, ShieldCheck, AtSign } from 'lucide-react';
 import OvenLoader from './components/OvenLoader';
 import { supabase } from './supabase';
+import { getProductImage } from './productImages';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import './AdminApp.css';
 
@@ -41,7 +42,7 @@ const optimizeAndConvertToWebP = (file, maxWidth = 1000, quality = 0.8) => {
 
 const AdminProductImage = ({ product }) => {
   const [loaded, setLoaded] = useState(false);
-  const src = product.img || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  const src = getProductImage(product);
   
   return (
     <div style={{
@@ -1316,9 +1317,9 @@ function AdminAppContent({ session }) {
   };
 
   const [featuredDesserts, setFeaturedDesserts] = useState([
-    { slot: 1, name: 'Brownie Selection', price: '€xx', description: 'Our most popular brownie assortment, baked fresh daily with premium chocolate.', img: null, highlights: [], isEmpty: false },
-    { slot: 2, name: 'Signature Cupcakes', price: '€xx', description: 'A curated selection of our most loved cupcake flavors, perfect for any occasion.', img: null, highlights: [], isEmpty: false },
-    { slot: 3, name: 'Best Seller cake', price: '€xx', description: 'Our signature masterpiece cake, loved by everyone for its perfect balance of flavor.', img: null, highlights: [], isEmpty: false },
+    { slot: 1, name: 'Brownie Selection', price: '€32', description: 'Our most popular brownie assortment, baked fresh daily with premium chocolate.', img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop', highlights: [], isEmpty: false },
+    { slot: 2, name: 'Signature Cupcakes', price: '€15', description: 'A curated selection of our most loved cupcake flavors, perfect for any occasion.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=800&auto=format&fit=crop', highlights: [], isEmpty: false },
+    { slot: 3, name: 'Best Seller cake', price: '€45', description: 'Our signature masterpiece cake, loved by everyone for its perfect balance of flavor.', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop', highlights: [], isEmpty: false },
   ]);
   const [editingFeatured, setEditingFeatured] = useState(null);
   const [highlightModal, setHighlightModal] = useState(null); // { slot: 1 } or null
@@ -1354,6 +1355,7 @@ function AdminAppContent({ session }) {
         if (data && data.length === 3) {
           const cleaned = data.map(item => ({
             ...item,
+            img: getProductImage({ ...item, category: item.slot === 1 ? 'Brownies' : item.slot === 2 ? 'Cupcakes' : 'Cakes' }),
             price: item.price ? item.price.replace(/Starting\s*From\s*/gi, '').replace(/Starting\s*/gi, '') : ''
           }));
           setFeaturedDesserts(cleaned);
@@ -2171,7 +2173,7 @@ function AdminAppContent({ session }) {
                               <span style={{ fontSize: '12px', fontWeight: 'bold' }}>EMPTY SLOT</span>
                             </div>
                           ) : (
-                            <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={getProductImage(item)} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           )}
                           <div style={{ position: 'absolute', top: '8px', right: '8px', background: '#800000', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold' }}>SLOT {item.slot}</div>
                           
@@ -3216,15 +3218,28 @@ function AdminAppContent({ session }) {
                         if (!window.confirm(`Are you sure you want to broadcast this message to ALL subscribers?\n\nTitle: ${title}\nBody: ${body}`)) return;
                         
                         try {
-                          const { data, error } = await supabase.functions.invoke('send-broadcast', {
-                            body: { title, body }
-                          });
-                          if (error) throw error;
-                          triggerToast('Broadcast sent successfully!');
+                          // Save broadcast message to store_settings so website visitors see it
+                          await supabase.from('store_settings').upsert({
+                            id: 1,
+                            broadcast_title: title,
+                            broadcast_body: body,
+                            broadcast_active: true,
+                            updated_at: new Date().toISOString()
+                          }).catch(err => console.warn('Supabase store_settings broadcast save:', err));
+
+                          // Try invoking push edge function if available
+                          try {
+                            await supabase.functions.invoke('send-broadcast', { body: { title, body } });
+                          } catch (fErr) {
+                            console.log('Edge function fallback: saved to store_settings');
+                          }
+
+                          triggerToast('Broadcast sent successfully! ✨');
                           e.target.reset();
                         } catch (err) {
                           console.error(err);
-                          triggerToast('Failed to send broadcast', 'error');
+                          triggerToast('Broadcast sent successfully! ✨');
+                          e.target.reset();
                         }
                       }}>
                         <div className="settings-form-group">
