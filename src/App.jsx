@@ -332,6 +332,32 @@ function App() {
   const [showIosPrompt, setShowIosPrompt] = useState(false);
   const [webNotification, setWebNotification] = useState(null);
 
+  const [storeAvailability, setStoreAvailability] = useState(null);
+  const [isStoreClosed, setIsStoreClosed] = useState(false);
+  const [customizingProduct, setCustomizingProduct] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
+  const [isSplashFading, setIsSplashFading] = useState(false);
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('minibakes_cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  const [featuredItems, setFeaturedItems] = useState([
+    { id: 't-featured', img: brownieImg, name: 'Brownie Selection', price: '', description: 'Our most popular brownie assortment, baked fresh daily with premium chocolate.' },
+    { id: 'cu-featured', img: cupcakeImg, name: 'Signature Cupcakes', price: '', description: 'A curated selection of our most loved cupcake flavors, perfect for any occasion.' },
+    { id: 'c-featured', img: cakeImg, name: 'Best Seller cake', price: '', description: 'Our signature masterpiece cake, loved by everyone for its perfect balance of flavor.' },
+  ]);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [expandedDesktopCard, setExpandedDesktopCard] = useState(null);
+  const [expandedMobileCard, setExpandedMobileCard] = useState(null);
+
+  const [currentView, setCurrentView] = useState('home');
+  const [previousView, setPreviousView] = useState('home');
+  const [menuActiveCategory, setMenuActiveCategory] = useState('Cakes');
+  const [menuActiveSubcategory, setMenuActiveSubcategory] = useState(null);
+  const [isOverDark, setIsOverDark] = useState(false);
+  const [showCartNudge, setShowCartNudge] = useState(false);
+
+
   useEffect(() => {
     const checkWebNotifications = async () => {
       const localOrders = JSON.parse(localStorage.getItem('minibakes_placed_orders') || '[]');
@@ -458,8 +484,6 @@ function App() {
     fetchAvailability();
   }, []);
 
-  const [storeAvailability, setStoreAvailability] = useState(null);
-  const [isStoreClosed, setIsStoreClosed] = useState(false);
 
   useEffect(() => {
     if (!storeAvailability) return;
@@ -521,9 +545,6 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  const [customizingProduct, setCustomizingProduct] = useState(null);
-  const [showSplash, setShowSplash] = useState(true);
-  const [isSplashFading, setIsSplashFading] = useState(false);
 
   useEffect(() => {
     // Start fading out after 2.6 seconds (leaving 0.4s for the fade transition)
@@ -567,10 +588,6 @@ function App() {
     });
   }, []);
 
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('minibakes_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
 
   useEffect(() => {
     localStorage.setItem('minibakes_cart', JSON.stringify(cart));
@@ -605,16 +622,6 @@ function App() {
     // Sync cart state to Supabase for Edge Functions
     updateCartReminder(cart.length);
   }, [cart]);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [expandedDesktopCard, setExpandedDesktopCard] = useState(null);
-  const [expandedMobileCard, setExpandedMobileCard] = useState(null);
-
-  const [currentView, setCurrentView] = useState('home');
-  const [previousView, setPreviousView] = useState('home');
-  const [menuActiveCategory, setMenuActiveCategory] = useState('Cakes');
-  const [menuActiveSubcategory, setMenuActiveSubcategory] = useState(null);
-  const [isOverDark, setIsOverDark] = useState(false);
-  const [showCartNudge, setShowCartNudge] = useState(false);
 
   useEffect(() => {
     try {
@@ -706,11 +713,6 @@ function App() {
     }, 0);
   };
 
-  const [featuredItems, setFeaturedItems] = useState([
-    { id: 't-featured', img: brownieImg, name: 'Brownie Selection', price: '', description: 'Our most popular brownie assortment, baked fresh daily with premium chocolate.' },
-    { id: 'cu-featured', img: cupcakeImg, name: 'Signature Cupcakes', price: '', description: 'A curated selection of our most loved cupcake flavors, perfect for any occasion.' },
-    { id: 'c-featured', img: cakeImg, name: 'Best Seller cake', price: '', description: 'Our signature masterpiece cake, loved by everyone for its perfect balance of flavor.' },
-  ]);
 
   useEffect(() => {
     const fetchFeatured = async () => {
