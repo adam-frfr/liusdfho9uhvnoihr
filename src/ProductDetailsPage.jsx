@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Minus, Plus, Image as ImageIcon, Upload, ShoppingBag, CheckCircle2, AlertCircle, Info, X, CakeSlice } from 'lucide-react';
 import SafeImage from './components/SafeImage';
 import ErrorBoundary from './ErrorBoundary';
+import { getProductImage } from './productImages';
 import './ProductDetailsPage.css';
 import CakeCareGuide from './components/CakeCareGuide';
 const Cake3D = React.lazy(() => import('./Cake3D'));
@@ -89,7 +90,7 @@ export default function ProductDetailsPage({ product, onBack, onConfirm, cartCou
 
   const [showCareModal, setShowCareModal] = useState(false);
   const [isMobileOverlayOpen, setIsMobileOverlayOpen] = useState(false);
-  const displayImg = product?.img;
+  const displayImg = getProductImage(product);
   const [options, setOptions] = useState({
     flavor: '',
     spreads: [], // Changed to array for multi-select support

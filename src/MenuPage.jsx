@@ -7,6 +7,7 @@ const Cake3D = React.lazy(() => import('./Cake3D'));
 
 import { supabase } from './supabase';
 import SafeImage from './components/SafeImage';
+import { getProductImage } from './productImages';
 
 const MAX_LAYERS = 3;
 
@@ -374,7 +375,8 @@ export default function MenuPage({
       
       const parsedCatProducts = catProducts.map(p => {
         let options = p.options || [];
-        let images = p.img ? [p.img] : [];
+        let imgSrc = getProductImage(p);
+        let images = [imgSrc];
         const galleryOption = options.find(o => o.name === '__gallery_images');
         if (galleryOption) {
           images = galleryOption.values;
@@ -383,6 +385,7 @@ export default function MenuPage({
         
         return {
           ...p,
+          img: imgSrc,
           options,
           images,
           isFullWidth: p.name.toLowerCase().includes('3d')
