@@ -280,7 +280,7 @@ const cupcakeImg = "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd
 const cakeImg = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop";
 
 
-const isSupabaseLive = supabase && import.meta.env.VITE_SUPABASE_URL;
+const isSupabaseLive = !!supabase;
 
 const getColorName = (color) => {
   if (!color) return 'Unknown Color';
